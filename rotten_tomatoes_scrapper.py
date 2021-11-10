@@ -149,7 +149,6 @@ def main():
     movies = scrap_main_page()
     total_movies = scrap_each_movie(movies)
     from_dict_to_csv(total_movies)
-    # find_info('https://www.rottentomatoes.com/m/no_time_to_die_2021')
 
 
 if __name__ == '__main__':
