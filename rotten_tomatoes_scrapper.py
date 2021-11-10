@@ -1,12 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import time
-from bs4 import BeautifulSoup
-from selenium.common.exceptions import NoSuchElementException
-
 import csv
+import time
+import conf
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
-url = "https://www.rottentomatoes.com/browse/in-theaters/"
+INPUT_DRIVER = input(conf.INPUT_QUESTION)
 
 
 def check_exists_by_xpath(driver, xpath):
@@ -27,28 +27,28 @@ def scrap_main_page():
     :return: a list of dict containing name , release date , and link to the website of the movie.
     """
     movies = []
-    driver = webdriver.Chrome("/Users/nissielthomas/Downloads/chromedriver")
-    driver.get(url)
-    click_more = driver.find_element(By.XPATH, '//*[@id="show-more-btn"]/button')
+    driver = webdriver.Chrome(INPUT_DRIVER)
+    driver.get(conf.URL)
+    click_more = driver.find_element(By.XPATH, conf.BUTTON_ID)
     # load all the main pages until the end
-    while check_exists_by_xpath(driver, '//*[@id="show-more-btn"]/button'):
+    while check_exists_by_xpath(driver, conf.BUTTON_ID):
         click_more.click()
-        time.sleep(2)
+        time.sleep(conf.SLEEP_TIME)
 
     content = driver.page_source
-    soup = BeautifulSoup(content, features="html.parser")
-    count = 0
+    soup = BeautifulSoup(content, features= conf.HTML_PARSER )
+    count = conf.ZERO
 
     # find all the atributes needed from the main page and put it in a list of dict
     for element in soup.findAll('div', attrs={'class': 'movie_info'}):
-        count += 1
+        count += conf.ONE
         dic = {}
         title = element.find('h3', attrs={'class': 'movieTitle'})
         # release_date = element.find('p', attrs={'class': 'release-date'})
         url_page = element.find("a")['href']
         dic["movies"] = title.text
         # dic["release_date"] = release_date.text
-        dic["url_page"] = "https://www.rottentomatoes.com" + url_page
+        dic["url_page"] = conf.ROTTEN_TOMATO_URL + url_page
         movies.append(dic)
     driver.quit()
     return movies
@@ -84,10 +84,10 @@ def find_info(url_movie):
     :return: list with all info needed and found on the movie
     """
     actor_list = []
-    driver = webdriver.Chrome("/Users/nissielthomas/Downloads/chromedriver")
+    driver = webdriver.Chrome(INPUT_DRIVER)
     driver.get(url_movie)
     content = driver.page_source
-    soup = BeautifulSoup(content, features="html.parser")
+    soup = BeautifulSoup(content, features=conf.HTML_PARSER)
     try:
         synopsis = ' '.join(soup.find(id='movieSynopsis').text.split())
         info_movie = {}
@@ -103,8 +103,8 @@ def find_info(url_movie):
         info_movie['audience_rate'] = audience_rate
 
         actor_dict = []
-        info_actors(soup, actor_dict, 'cast-item media inlineBlock', actor_list)
-        info_actors(soup, actor_dict, 'cast-item media inlineBlock moreCasts hide', actor_list)
+        info_actors(soup, actor_dict, conf.HTML_ACTOR, actor_list)
+        info_actors(soup, actor_dict, conf.HTML_ACTOR_HIDE, actor_list)
 
         info_movie['actors'] = ', '.join(actor_list)
 
@@ -121,7 +121,7 @@ def info_actors(soup, actor_dict, path, actor_list):
         dict = {}
         try:
             url_page = element.find("a")['href']
-            dict['url'] = "https://www.rottentomatoes.com" + url_page
+            dict['url'] = conf.ROTTEN_TOMATO_URL + url_page
         except Exception:
             continue
         temp = element.text.splitlines()
@@ -146,9 +146,10 @@ def from_dict_to_csv(total_movies):
 
 
 def main():
+    print(time.__version__)
     movies = scrap_main_page()
     total_movies = scrap_each_movie(movies)
-    from_dict_to_csv(total_movies)
+    # from_dict_to_csv(total_movies)
 
 
 if __name__ == '__main__':
