@@ -4,6 +4,8 @@ import time
 from bs4 import BeautifulSoup
 from selenium.common.exceptions import NoSuchElementException
 
+import csv
+
 url = "https://www.rottentomatoes.com/browse/in-theaters/"
 
 
@@ -58,11 +60,20 @@ def scrap_each_movie(movies):
     :param movies: list of dict containing name and url of movies
     :return: list of dict  with all info needed added
     """
-    for i in range(len(movies)):
+    """
+    try :
+        Parallel(n_jobs=-1)(delayed(find_info)(movies[i]["url_page"]) for i in range(len(movies)))
+    except Exception:
+        pass
+"""
+
+    for i in range(0, 5):
         url_movie = movies[i]["url_page"]
-        info_movie = find_info(url_movie)
-        movies[i].update(info_movie)
-        print(movies[i])
+        try:
+            info_movie = find_info(url_movie)
+            movies[i].update(info_movie)
+        except Exception:
+            pass
     return movies
 
 
@@ -72,53 +83,73 @@ def find_info(url_movie):
     :param url_movie: receive url of a movie
     :return: list with all info needed and found on the movie
     """
+    actor_list = []
     driver = webdriver.Chrome("/Users/nissielthomas/Downloads/chromedriver")
     driver.get(url_movie)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
+    try:
+        synopsis = ' '.join(soup.find(id='movieSynopsis').text.split())
+        info_movie = {}
+        info_movie['synopsis'] = synopsis
+        for element in soup.find('ul', attrs={'class': 'content-meta info'}).findAll(class_='meta-row clearfix'):
+            key = ' '.join(element.find(class_='meta-label subtle').text.split())[:-1]
+            value = ' '.join(element.find(class_='meta-value').text.split())
+            info_movie[key] = value
+        rates = str(soup.find(id='topSection').find('score-board')).split()
+        tomato_rate = rates[1].split('=')[1].replace("\"", "")
+        audience_rate = rates[6].split('=')[1].replace("\"", "")
+        info_movie['tomato_rate'] = tomato_rate
+        info_movie['audience_rate'] = audience_rate
 
-    synopsis = ' '.join(soup.find(id='movieSynopsis').text.split())
-    info_movie = {}
-    info_movie['synopsis'] = synopsis
-    for element in soup.find('ul', attrs={'class': 'content-meta info'}).findAll(class_='meta-row clearfix'):
-        key = ' '.join(element.find(class_='meta-label subtle').text.split())[:-1]
-        value = ' '.join(element.find(class_='meta-value').text.split())
-        info_movie[key] = value
-    rates = str(soup.find(id='topSection').find('score-board')).split()
-    tomato_rate = rates[1].split('=')[1].replace("\"", "")
-    audience_rate = rates[6].split('=')[1].replace("\"", "")
-    info_movie['tomato_rate'] = tomato_rate
-    info_movie['audience_rate'] = audience_rate
+        actor_dict = []
+        info_actors(soup, actor_dict, 'cast-item media inlineBlock', actor_list)
+        info_actors(soup, actor_dict, 'cast-item media inlineBlock moreCasts hide', actor_list)
 
-    actor_dict = []
-    info_actors(soup, actor_dict, 'cast-item media inlineBlock')
-    info_actors(soup, actor_dict, 'cast-item media inlineBlock  moreCasts hide')
+        info_movie['actors'] = ', '.join(actor_list)
 
-    info_movie['actors'] = actor_dict
-    return info_movie
+        return info_movie
+    except Exception:
+        pass
 
 
-def info_actors(soup, actor_dict, path):
+def info_actors(soup, actor_dict, path, actor_list):
     """ in a specific page put in a list a dic with
     the name of the actors ,their role and a url who lead to the actor page"""
+
     for element in soup.findAll(class_=path):
         dict = {}
-        url_page = element.find("a")['href']
+        try:
+            url_page = element.find("a")['href']
+            dict['url'] = "https://www.rottentomatoes.com" + url_page
+        except Exception:
+            continue
         temp = element.text.splitlines()
         result = []
         [result.append(x.strip()) for x in temp if x.strip() != ""]
         name = result[0]
-        role = result[1]
         dict['name'] = name
-        dict['role'] = role
-        dict['url'] = "https://www.rottentomatoes.com" + url_page
+        if len(result) > 1:
+            role = result[1]
+            dict['role'] = role
+        actor_list.append(dict['name'])
         actor_dict.append(dict)
+
+
+def from_dict_to_csv(total_movies):
+    keys = total_movies[0].keys()
+    movies_file = open("movies.csv", "w")
+    dict_writer = csv.DictWriter(movies_file, keys)
+    dict_writer.writeheader()
+    dict_writer.writerows(total_movies)
+    movies_file.close()
 
 
 def main():
     movies = scrap_main_page()
     total_movies = scrap_each_movie(movies)
-    # find_info('https://www.rottentomatoes.com/m/1017289-rear_window')
+    from_dict_to_csv(total_movies)
+    # find_info('https://www.rottentomatoes.com/m/no_time_to_die_2021')
 
 
 if __name__ == '__main__':
