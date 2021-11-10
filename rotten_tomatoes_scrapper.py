@@ -36,7 +36,7 @@ def scrap_main_page():
         time.sleep(conf.SLEEP_TIME)
 
     content = driver.page_source
-    soup = BeautifulSoup(content, features= conf.HTML_PARSER )
+    soup = BeautifulSoup(content, features=conf.HTML_PARSER)
     count = conf.ZERO
 
     # find all the atributes needed from the main page and put it in a list of dict
@@ -146,10 +146,9 @@ def from_dict_to_csv(total_movies):
 
 
 def main():
-    print(time.__version__)
     movies = scrap_main_page()
     total_movies = scrap_each_movie(movies)
-    # from_dict_to_csv(total_movies)
+    from_dict_to_csv(total_movies)
 
 
 if __name__ == '__main__':
