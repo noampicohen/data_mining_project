@@ -3,7 +3,7 @@ Our first project at Israel Tech Challenge, scrapping of the website rottentomat
 
 We scrapped the rottentomatoes site, we went through a classic path taking as much data as possible. The data of the page of the recent releases or rankings, then the pages of the films it contains. 
 
-The code is run by simply calling its name or directly with the run feature. Then the program ask the user the path of chromedriver in his computer.
+The code is run by simply calling its name or directly with the run feature. Then the program ask the user the path of chromedriver in his computer that the user should have install in his computer, in the version corresponding to its version of Chrome.
 The constants are stored in the conf.py file. 
 
 History of the difficulties and the solutions chosen to get around them. 
