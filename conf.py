@@ -1,5 +1,5 @@
 #URL
-URL = "https://www.rottentomatoes.com/browse/in-theaters/"
+URL = "https://www.rottentomatoes.com/browse/cf-dvd-streaming-all"
 ROTTEN_TOMATO_URL = "https://www.rottentomatoes.com"
 
 #INPUT

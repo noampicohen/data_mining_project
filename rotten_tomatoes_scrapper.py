@@ -67,7 +67,7 @@ def scrap_each_movie(movies):
         pass
 """
 
-    for i in range(0, 5):
+    for i in range(len(movies)):
         url_movie = movies[i]["url_page"]
         try:
             info_movie = find_info(url_movie)
@@ -107,7 +107,7 @@ def find_info(url_movie):
         info_actors(soup, actor_dict, conf.HTML_ACTOR_HIDE, actor_list)
 
         info_movie['actors'] = ', '.join(actor_list)
-
+        print(info_movie)
         return info_movie
     except Exception:
         pass
@@ -137,7 +137,7 @@ def info_actors(soup, actor_dict, path, actor_list):
 
 
 def from_dict_to_csv(total_movies):
-    keys = total_movies[0].keys()
+    keys = set().union(*(d.keys() for d in total_movies))
     movies_file = open("movies.csv", "w")
     dict_writer = csv.DictWriter(movies_file, keys)
     dict_writer.writeheader()
@@ -148,6 +148,7 @@ def from_dict_to_csv(total_movies):
 def main():
     movies = scrap_main_page()
     total_movies = scrap_each_movie(movies)
+    print(total_movies)
     from_dict_to_csv(total_movies)
 
 
