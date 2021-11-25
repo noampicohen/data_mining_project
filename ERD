@@ -1,0 +1,246 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`languages`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`languages` (
+  `id_language` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `name_language` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_language`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`synopsis`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`synopsis` (
+  `id_synopsis` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `text_synopsis` VARCHAR(1000) NULL,
+  PRIMARY KEY (`id_synopsis`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
+  `id_movies` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `name_movie` VARCHAR(255) NULL,
+  `url_page` VARCHAR(255) NULL,
+  `release_date_streaming` DATETIME NULL,
+  `release_date_theater` DATETIME NULL,
+  `rate_tomato` INT NULL,
+  `rate_audience` INT NULL,
+  `boxoffice` INT NULL,
+  `languages_id_language` INT NOT NULL,
+  `synopsis_id_synopsis` INT NOT NULL,
+  PRIMARY KEY (`id_movies`),
+  INDEX `fk_movies_languages_idx` (`languages_id_language` ASC) VISIBLE,
+  INDEX `fk_movies_synopsis1_idx` (`synopsis_id_synopsis` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_languages`
+    FOREIGN KEY (`languages_id_language`)
+    REFERENCES `mydb`.`languages` (`id_language`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_synopsis1`
+    FOREIGN KEY (`synopsis_id_synopsis`)
+    REFERENCES `mydb`.`synopsis` (`id_synopsis`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`genre`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`genre` (
+  `id_genre` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `name_genre` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_genre`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_genre`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_genre` (
+  `movies_id_movies` INT NOT NULL,
+  `genre_id_genre` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `genre_id_genre`),
+  INDEX `fk_movies_has_genre_genre1_idx` (`genre_id_genre` ASC) VISIBLE,
+  INDEX `fk_movies_has_genre_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_genre_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_genre_genre1`
+    FOREIGN KEY (`genre_id_genre`)
+    REFERENCES `mydb`.`genre` (`id_genre`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`directors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`directors` (
+  `id_director` INT NOT NULL,
+  `name_director` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_director`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`actors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`actors` (
+  `id_actor` INT NOT NULL,
+  `name_actor` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_actor`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`producers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`producers` (
+  `id_producer` INT NOT NULL,
+  `name_producer` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_producer`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`writers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`writers` (
+  `id_writer` INT NOT NULL,
+  `name_writer` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_writer`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`distributors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`distributors` (
+  `id_distributor` INT NOT NULL,
+  `name_distributor` VARCHAR(255) NULL,
+  PRIMARY KEY (`id_distributor`));
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_writers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_writers` (
+  `movies_id_movies` INT NOT NULL,
+  `writers_id_writer` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `writers_id_writer`),
+  INDEX `fk_movies_has_writers_writers1_idx` (`writers_id_writer` ASC) VISIBLE,
+  INDEX `fk_movies_has_writers_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_writers_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_writers_writers1`
+    FOREIGN KEY (`writers_id_writer`)
+    REFERENCES `mydb`.`writers` (`id_writer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_actors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_actors` (
+  `movies_id_movies` INT NOT NULL,
+  `actors_id_actor` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `actors_id_actor`),
+  INDEX `fk_movies_has_actors_actors1_idx` (`actors_id_actor` ASC) VISIBLE,
+  INDEX `fk_movies_has_actors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_actors_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_actors_actors1`
+    FOREIGN KEY (`actors_id_actor`)
+    REFERENCES `mydb`.`actors` (`id_actor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_producers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_producers` (
+  `movies_id_movies` INT NOT NULL,
+  `producers_id_producer` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `producers_id_producer`),
+  INDEX `fk_movies_has_producers_producers1_idx` (`producers_id_producer` ASC) VISIBLE,
+  INDEX `fk_movies_has_producers_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_producers_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_producers_producers1`
+    FOREIGN KEY (`producers_id_producer`)
+    REFERENCES `mydb`.`producers` (`id_producer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_directors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_directors` (
+  `movies_id_movies` INT NOT NULL,
+  `directors_id_director` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `directors_id_director`),
+  INDEX `fk_movies_has_directors_directors1_idx` (`directors_id_director` ASC) VISIBLE,
+  INDEX `fk_movies_has_directors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_directors_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_directors_directors1`
+    FOREIGN KEY (`directors_id_director`)
+    REFERENCES `mydb`.`directors` (`id_director`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`movies_to_distributors`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_distributors` (
+  `movies_id_movies` INT NOT NULL,
+  `distributors_id_distributor` INT NOT NULL,
+  PRIMARY KEY (`movies_id_movies`, `distributors_id_distributor`),
+  INDEX `fk_movies_has_distributors_distributors1_idx` (`distributors_id_distributor` ASC) VISIBLE,
+  INDEX `fk_movies_has_distributors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
+  CONSTRAINT `fk_movies_has_distributors_movies1`
+    FOREIGN KEY (`movies_id_movies`)
+    REFERENCES `mydb`.`movies` (`id_movies`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_movies_has_distributors_distributors1`
+    FOREIGN KEY (`distributors_id_distributor`)
+    REFERENCES `mydb`.`distributors` (`id_distributor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
