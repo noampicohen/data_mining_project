@@ -1,5 +1,5 @@
 # data_mining_project-
-Our first project at Israel Tech Challenge, scrapping of the website rottentomatoes.
+The first project at Israel Tech Challenge, scrapping of the website rottentomatoes. By Noam Cohen and Nissiel.
 
 We scrapped the rottentomatoes site, we went through a classic path taking as much data as possible. The data of the page of the recent releases or rankings, then the pages of the films it contains. 
 
