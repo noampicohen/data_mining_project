@@ -18,7 +18,7 @@ USE `mydb` ;
 -- Table `mydb`.`languages`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`languages` (
-  `id_language` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_language` INT NOT NULL,
   `name_language` VARCHAR(255) NULL,
   PRIMARY KEY (`id_language`));
 
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`languages` (
 -- Table `mydb`.`synopsis`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`synopsis` (
-  `id_synopsis` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_synopsis` INT NOT NULL,
   `text_synopsis` VARCHAR(1000) NULL,
   PRIMARY KEY (`id_synopsis`));
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`synopsis` (
 -- Table `mydb`.`movies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
-  `id_movies` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_movies` INT NOT NULL,
   `name_movie` VARCHAR(255) NULL,
   `url_page` VARCHAR(255) NULL,
   `release_date_streaming` DATETIME NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
 -- Table `mydb`.`genre`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`genre` (
-  `id_genre` INT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_genre` INT NOT NULL,
   `name_genre` VARCHAR(255) NULL,
   PRIMARY KEY (`id_genre`));
 
@@ -244,4 +244,5 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_distributors` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
