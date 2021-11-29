@@ -18,7 +18,7 @@ USE `mydb` ;
 -- Table `mydb`.`languages`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`languages` (
-  `id_language` INT NOT NULL,
+  `id_language` INT NOT NULL AUTO_INCREMENT,
   `name_language` VARCHAR(255) NULL,
   PRIMARY KEY (`id_language`));
 
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`languages` (
 -- Table `mydb`.`synopsis`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`synopsis` (
-  `id_synopsis` INT NOT NULL,
+  `id_synopsis` INT NOT NULL AUTO_INCREMENT,
   `text_synopsis` VARCHAR(1000) NULL,
   PRIMARY KEY (`id_synopsis`));
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`synopsis` (
 -- Table `mydb`.`movies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
-  `id_movies` INT NOT NULL,
+  `id_movies` INT NOT NULL AUTO_INCREMENT,
   `name_movie` VARCHAR(255) NULL,
   `url_page` VARCHAR(255) NULL,
   `release_date_streaming` DATETIME NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
 -- Table `mydb`.`genre`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`genre` (
-  `id_genre` INT NOT NULL,
+  `id_genre` INT NOT NULL AUTO_INCREMENT,
   `name_genre` VARCHAR(255) NULL,
   PRIMARY KEY (`id_genre`));
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_genre` (
 -- Table `mydb`.`directors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`directors` (
-  `id_director` INT NOT NULL,
+  `id_director` INT NOT NULL AUTO_INCREMENT,
   `name_director` VARCHAR(255) NULL,
   PRIMARY KEY (`id_director`));
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`directors` (
 -- Table `mydb`.`actors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`actors` (
-  `id_actor` INT NOT NULL,
+  `id_actor` INT NOT NULL AUTO_INCREMENT,
   `name_actor` VARCHAR(255) NULL,
   PRIMARY KEY (`id_actor`));
 
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`actors` (
 -- Table `mydb`.`producers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`producers` (
-  `id_producer` INT NOT NULL,
+  `id_producer` INT NOT NULL AUTO_INCREMENT,
   `name_producer` VARCHAR(255) NULL,
   PRIMARY KEY (`id_producer`));
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`producers` (
 -- Table `mydb`.`writers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`writers` (
-  `id_writer` INT NOT NULL,
+  `id_writer` INT NOT NULL AUTO_INCREMENT,
   `name_writer` VARCHAR(255) NULL,
   PRIMARY KEY (`id_writer`));
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`writers` (
 -- Table `mydb`.`distributors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`distributors` (
-  `id_distributor` INT NOT NULL,
+  `id_distributor` INT NOT NULL AUTO_INCREMENT,
   `name_distributor` VARCHAR(255) NULL,
   PRIMARY KEY (`id_distributor`));
 
@@ -244,5 +244,3 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_distributors` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
