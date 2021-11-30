@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies` (
   `id_movies` INT NOT NULL AUTO_INCREMENT,
   `name_movie` VARCHAR(255) NULL,
   `url_page` VARCHAR(255) NULL,
-  `release_date_streaming` DATETIME NULL,
-  `release_date_theater` DATETIME NULL,
+  `release_date_streaming` DATE NULL,
+  `release_date_theater` DATE NULL,
   `rate_tomato` INT NULL,
   `rate_audience` INT NULL,
   `boxoffice` INT NULL,
@@ -76,7 +76,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`genre` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_genre` (
   `movies_id_movies` INT NOT NULL,
   `genre_id_genre` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `genre_id_genre`),
   INDEX `fk_movies_has_genre_genre1_idx` (`genre_id_genre` ASC) VISIBLE,
   INDEX `fk_movies_has_genre_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_genre_movies1`
@@ -142,7 +141,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`distributors` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_writers` (
   `movies_id_movies` INT NOT NULL,
   `writers_id_writer` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `writers_id_writer`),
   INDEX `fk_movies_has_writers_writers1_idx` (`writers_id_writer` ASC) VISIBLE,
   INDEX `fk_movies_has_writers_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_writers_movies1`
@@ -163,7 +161,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_writers` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_actors` (
   `movies_id_movies` INT NOT NULL,
   `actors_id_actor` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `actors_id_actor`),
   INDEX `fk_movies_has_actors_actors1_idx` (`actors_id_actor` ASC) VISIBLE,
   INDEX `fk_movies_has_actors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_actors_movies1`
@@ -184,7 +181,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_actors` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_producers` (
   `movies_id_movies` INT NOT NULL,
   `producers_id_producer` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `producers_id_producer`),
   INDEX `fk_movies_has_producers_producers1_idx` (`producers_id_producer` ASC) VISIBLE,
   INDEX `fk_movies_has_producers_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_producers_movies1`
@@ -205,7 +201,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_producers` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_directors` (
   `movies_id_movies` INT NOT NULL,
   `directors_id_director` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `directors_id_director`),
   INDEX `fk_movies_has_directors_directors1_idx` (`directors_id_director` ASC) VISIBLE,
   INDEX `fk_movies_has_directors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_directors_movies1`
@@ -226,7 +221,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_directors` (
 CREATE TABLE IF NOT EXISTS `mydb`.`movies_to_distributors` (
   `movies_id_movies` INT NOT NULL,
   `distributors_id_distributor` INT NOT NULL,
-  PRIMARY KEY (`movies_id_movies`, `distributors_id_distributor`),
   INDEX `fk_movies_has_distributors_distributors1_idx` (`distributors_id_distributor` ASC) VISIBLE,
   INDEX `fk_movies_has_distributors_movies1_idx` (`movies_id_movies` ASC) VISIBLE,
   CONSTRAINT `fk_movies_has_distributors_movies1`
