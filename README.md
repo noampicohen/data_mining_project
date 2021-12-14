@@ -5,17 +5,16 @@ We scrapped the rottentomatoes site, we went through a classic path taking as mu
 
 
 Runnning of the code :
-When running the code for the first name, creating the associated database is needed, either by using the ERD script attached or directly by using the ERD.py file attached, launching it from the terminal specifying your password in first argument. (format: ERD.py [SQL PASSWORD])
-Then the code is run by calling its name from the terminal following by three arguments : the type of movie we want to scrap, then the number of movies we want to scrap and then the password of its mysql root access. (format: rotten_tomatoes_scrapper.py [category] [number of movies] [SQL PASSWORD])Then the program asks the user the path of chromedriver in his computer that the user should have install in his computer, in the version corresponding to its version of Chrome. 
+The code is run by calling its name from the terminal following by four arguments : the type of movie we want to scrap, the number of movies we want to scrap, the password of user mysql root access and then the chrome driver path in user computer. (format: rotten_tomatoes_scrapper.py [category] [number of movies] [SQL PASSWORD] [Chrome pass driver])
 The list of movies types are ('ALL','ACTION','ANIMATION','ART_FOREIGN','CLASSIC','COMEDY','DOCUMENTARY','DRAMA','HORROR','FAMILY','MISTERY','ROMANCE','SCIFI'). The use of upper or lower case for the type of film is indifferent.
-If the number of movies that user want to scrap is bigger than the number of movies on the website, only the movies available will be scrapped.
+If the number of movies that user wants to scrap is bigger than the number of movies on the website, only the movies available will be scrapped.
 The constants are stored in the conf.py file. 
 The scraped data will be aded to the corresponding database named rotten. 
 
 
 Database documentation: 
 The tables contained in the database are :
-- movies containing the name, url, release date in straming and theaters, rates of tomato website and audience, and box office.
+- movies containing the name, url, release date in straming and theaters, rates of tomato website and audience, box office and url of the movie trailer on youtube.
 - genre containing the genre of movies.
 - languages containing the genre of movies.
 - synopsis containing the synopsis of movies.
@@ -26,8 +25,7 @@ The tables contained in the database are :
 - distributors containing the name of the distributors.
 _ The many-to-many tables that is relating the table movies with others movies_to_genre , movies_to_writers , movies_to_actors , movies_to_producers , movies_to_directors , movies_to_distributors ,
 
-[ERD_rotten_tomatoes.pdf](https://github.com/noampicohen/data_mining_project/files/7628305/ERD_rotten_tomatoes.pdf)
-
+[ERD_rotten_tomatoes_scrapping.pdf](https://github.com/noampicohen/data_mining_project/files/7711735/ERD_rotten_tomatoes_scrapping.pdf)
 
 History of the difficulties and the solutions chosen to get around them :
 
@@ -62,7 +60,6 @@ After a long reflexion on the website to scrap we finally chose rotten tomato be
  - Command interface : in order to give to the user more possibilities in the scrapping we decided to add two functionalities : first the type of movie to scrap and second the number of movies to scrap 
  
  - Construction of the database : We designed the database on mysql workbench and then run the code on big sizes of movies in order to fix the particular problems than can occured with a non usal type of data for a specific movies. 
-
-
-
+ 
+ - We also used youtube API to add in our database the link of the trailer movie in youtube. 
 
