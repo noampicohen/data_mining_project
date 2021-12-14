@@ -1,6 +1,18 @@
 import mysql.connector
-import sys
 
+def verify_database(password):
+    mydb = mysql.connector.connect(host='localhost',
+                                   user='root',
+                                   password=password)
+
+    mycursor = mydb.cursor()
+    mycursor.execute("""
+    SELECT COUNT(SCHEMA_NAME)
+    FROM INFORMATION_SCHEMA.SCHEMATA
+    WHERE
+    SCHEMA_NAME = 'rotten'
+    """)
+    return mycursor.fetchall()[0][0]
 
 def create_database(password):
     mydb = mysql.connector.connect(host='localhost',
@@ -9,15 +21,10 @@ def create_database(password):
 
     mycursor = mydb.cursor()
 
-    mycursor.execute("CREATE DATABASE  rotten ")
+    mycursor.execute("CREATE DATABASE IF NOT EXISTS rotten ")
     mycursor.execute("USE rotten")
 
-    mycursor.execute('''CREATE TABLE IF NOT EXISTS `languages` (
-      `id_language` INT NOT NULL AUTO_INCREMENT,
-      `name_language` VARCHAR(255) NULL,
-      PRIMARY KEY (`id_language`));
-    
-    
+    mycursor.execute('''
     CREATE TABLE IF NOT EXISTS `synopsis` (
       `id_synopsis` INT NOT NULL AUTO_INCREMENT,,
       `text_synopsis` VARCHAR(1000) NULL,
@@ -44,6 +51,7 @@ def create_database(password):
       `boxoffice` INT NULL,
       `languages_id_language` INT  NULL,
       `synopsis_id_synopsis` INT  NULL,
+      `url_youtube_trailer` VARCHAR(255) NULL,
       PRIMARY KEY (`id_movies`),
       CONSTRAINT `fk_movies_languages`
         FOREIGN KEY (`languages_id_language`)
@@ -55,6 +63,7 @@ def create_database(password):
         REFERENCES `synopsis` (`id_synopsis`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION);''')
+
 
     mycursor.execute('''CREATE INDEX `fk_movies_languages_idx` ON `movies` (`languages_id_language` ASC) VISIBLE;''')
 
@@ -187,14 +196,4 @@ def create_database(password):
         ON UPDATE NO ACTION);''')
 
 
-def main():
-    args = sys.argv[1:]
-    if len(args) < 1:
-        print('usage: ERD.py [SQL PASSWORD]  ')
-        sys.exit(1)
-    password = args[0]
-    create_database(password)
 
-
-if __name__ == '__main__':
-    main()
