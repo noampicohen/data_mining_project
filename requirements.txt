@@ -1,3 +1,8 @@
+#REQUIREMENTS
 
-beautifulsoup4 == 4.9.3
-bs4==0.0.1
+beautifulsoup4>=4.10.0
+selenium>=4.0.0
+mysql>=0.0.3
+mysql-connector-python>=8.0.27
+PyMySQL>=1.0.2
+requests>=2.26.0
